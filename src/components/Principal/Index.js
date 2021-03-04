@@ -7,17 +7,43 @@ function Index() {
 
   useEffect(() => {
     navigator.geolocation.getCurrentPosition((position) => {
-      console.log(position.coords.latitude, position.coords.longitude)
+      getWeather(position.coords.latitude, position.coords.longitude)
       setLocation(true)
     })
   })
 
-  if (location === false) {
+  let getWeather = async (lat, long) => {
+    let res = await axios.get(
+      "https://api.openweathermap.org/data/2.5/weather",
+      {
+        params: {
+          lat: lat,
+          lon: long,
+          appid: process.env.REACT_APP_OPEN_WHEATHER_KEY,
+          lang: "pt",
+          units: "metric",
+        },
+      }
+    )
+    setWeather(res.data)
+    console.log(res.data)
+  }
+
+  function refreshPage() {
+    window.parent.location = window.parent.location.href
+  }
+
+  if (!location) {
     return <Fragment>Clique em PERMITIR para exibir os dados o/</Fragment>
+  } else if (!weather) {
+    return <Fragment>Carregando clima... wait aí</Fragment>
   } else {
     return (
       <Fragment>
-        <h3>Exemplo de consumo</h3>
+        <h3>Hoje o clima está: ({weather["weather"][0]["description"]}) : </h3>
+        <img
+          src={`http://openweathermap.org/img/w/${weather["weather"][0]["icon"]}.png`}
+        />
         <hr />
         <ul>
           <li>Temperatura atual: </li>
@@ -26,6 +52,9 @@ function Index() {
           <li>Pressão: </li>
           <li>Umidade: </li>
         </ul>
+        <button type="button" onClick={refreshPage}>
+          Atualizar clima
+        </button>
       </Fragment>
     )
   }
