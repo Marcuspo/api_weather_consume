@@ -12,7 +12,7 @@ function Index() {
     })
   })
 
-  if (location == false) {
+  if (location === false) {
     return <Fragment>Clique em PERMITIR para exibir os dados o/</Fragment>
   } else {
     return (
