@@ -40,17 +40,20 @@ function Index() {
   } else {
     return (
       <Fragment>
-        <h3>Hoje o clima está: ({weather["weather"][0]["description"]}) : </h3>
+        <h3>
+          Hoje o clima em {weather["name"]} é de : "
+          {weather["weather"][0]["description"]}" :{" "}
+        </h3>
         <img
           src={`http://openweathermap.org/img/w/${weather["weather"][0]["icon"]}.png`}
+          alt="ícone do tempo"
         />
         <hr />
         <ul>
-          <li>Temperatura atual: </li>
-          <li>Temperatura máxima: </li>
-          <li>Temperatura mínima: </li>
-          <li>Pressão: </li>
-          <li>Umidade: </li>
+          <li>Temperatura atual: {weather["main"]["temp"]}º </li>
+          <li>Pressão: {weather["main"]["pressure"]} hpa </li>
+          <li>Humidade: {weather["main"]["humidity"]}%</li>
+          <li>Sensação térmica: {weather["main"]["feels_like"]}º</li>
         </ul>
         <button type="button" onClick={refreshPage}>
           Atualizar clima
